@@ -1,0 +1,17 @@
+---
+- name: Get vector distrib
+  ansible.builtin.get_url:
+    url: "https://packages.timber.io/vector/0.30.0/vector-0.30.0-1.{{ vector_arch }}.rpm"
+    dest: "./vector-0.30.0-1.{{ vector_arch }}.rpm"
+    mode: "0755"
+- name: Install vector
+  become: true
+  ansible.builtin.yum:
+    name:
+      - vector-0.30.0-1.{{ vector_arch }}.rpm
+- name: Configure vector
+  become: true
+  ansible.builtin.template:
+    src: "./templates/vector/vector.toml.j2"
+    dest: "/etc/vector/vector.toml"
+    mode: "0755"
